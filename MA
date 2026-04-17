@@ -1,0 +1,532 @@
+Pract1: Introduction to REST API using Spring Boot.
+Student.java
+package com.example.restdemo.model; 
+public class Student { 
+ 
+    private int id; 
+    private String name; 
+    private String course; 
+ 
+    public Student() { 
+    } 
+ 
+    public Student(int id, String name, String course) { 
+        this.id = id; 
+        this.name = name; 
+        this.course = course; 
+    } 
+ 
+    public int getId() { 
+        return id; 
+    } 
+ 
+    public void setId(int id) { 
+        this.id = id; 
+    } 
+ 
+    public String getName() { 
+        return name; 
+    } 
+ 
+    public void setName(String name) { 
+        this.name = name; 
+    } 
+ 
+    public String getCourse() { 
+        return course; 
+    } 
+ 
+    public void setCourse(String course) { 
+        this.course = course; 
+    } 
+} 
+
+StudentController.java
+package com.example.restdemo.controller; 
+import org.springframework.web.bind.annotation.*; 
+import com.example.restdemo.model.Student; 
+@RestController 
+@RequestMapping("/students") 
+public class StudentController { 
+@GetMapping 
+public Student getStudent() { 
+return new Student(1, "Rahul", "BSc IT"); 
+} 
+@PostMapping 
+public Student createStudent(@RequestBody Student student) { 
+return student; 
+} 
+} 
+
+
+Practical2: Creating a Monolithic Application using Spring Boot. 
+ Student.java 
+package com.example.universitymonolith.model; 
+ 
+public class Student { 
+    private int id; 
+    private String name; 
+ 
+    public Student(int id, String name) { 
+        this.id = id; 
+        this.name = name; 
+    } 
+    public int getId() { 
+        return id; 
+    } 
+    public String getName() { 
+        return name; 
+    } 
+} 
+Course.java 
+package com.example.universitymonolith.model; 
+public class Course { 
+    private int id; 
+    private String courseName; 
+ 
+    public Course(int id, String courseName) { 
+        this.id = id; 
+        this.courseName = courseName; 
+    } 
+ 
+    public int getId() { 
+        return id; 
+    } 
+ 
+    public String getCourseName() { 
+        return courseName; 
+    } 
+} 
+
+Result.java
+package com.example.universitymonolith.model; 
+public class Result { 
+    private int studentId; 
+    private int marks; 
+ 
+    public Result(int studentId, int marks) { 
+        this.studentId = studentId; 
+        this.marks = marks; 
+    } 
+ 
+    public int getStudentId() { 
+        return studentId; 
+    } 
+ 
+    public int getMarks() { 
+        return marks; 
+    } 
+} 
+
+UniversityController.java
+package com.example.universitymonolith.controller; 
+import org.springframework.web.bind.annotation.*; 
+import com.example.universitymonolith.model.*; 
+@RestController 
+@RequestMapping("/university") 
+public class UniversityController { 
+    @GetMapping("/student") 
+    public Student getStudent() { 
+        return new Student(1, "Rahul"); 
+    } 
+ 
+    @GetMapping("/course") 
+    public Course getCourse() { 
+        return new Course(101, "BSc IT"); 
+    } 
+ 
+    @GetMapping("/result") 
+    public Result getResult() { 
+        return new Result(1, 85); 
+    } 
+} 
+
+http://localhost:8080/university/student
+
+Practical3: Converting Monolithic Application to Microservices
+ Student.java 
+package com.example.studentservice.model; 
+public class Student { 
+    private int id; 
+    private String name; 
+ 
+    public Student(int id, String name) { 
+        this.id = id; 
+        this.name = name; 
+    } 
+ 
+    public int getId() { 
+        return id; 
+    } 
+ 
+    public String getName() { 
+        return name; 
+    } 
+}
+
+Student Controller 
+package com.example.studentservice.controller; 
+import org.springframework.web.bind.annotation.*; 
+import com.example.studentservice.model.Student; 
+@RestController 
+@RequestMapping("/students") 
+public class StudentController { 
+@GetMapping 
+public Student getStudent() { 
+return new Student(1, "Rahul"); 
+} 
+} 
+
+PART 2- course
+ Course.java 
+package com.example.courseservice.model; 
+public class Course { 
+    private int id; 
+    private String courseName; 
+ 
+    public Course(int id, String courseName) { 
+        this.id = id; 
+        this.courseName = courseName; 
+    } 
+ 
+    public int getId() { 
+        return id; 
+    } 
+ 
+    public String getCourseName() { 
+        return courseName; 
+    } 
+}
+
+CourseController.java 
+package com.example.courseservice.controller; 
+import org.springframework.web.bind.annotation.*; 
+import com.example.courseservice.model.Course; 
+@RestController 
+@RequestMapping("/courses") 
+public class CourseController { 
+@GetMapping 
+public Course getCourse() { 
+return new Course(101, "BSc IT"); 
+} 
+} 
+
+PART 3- Result
+Result.java 
+package com.example.resultservice.model; 
+public class Result { 
+    private int studentId; 
+    private int marks; 
+ 
+    public Result(int studentId, int marks) { 
+        this.studentId = studentId; 
+        this.marks = marks; 
+    } 
+ 
+    public int getStudentId() { 
+        return studentId; 
+    } 
+ 
+    public int getMarks() { 
+        return marks; 
+    } 
+}
+
+ResultController.java 
+ 
+package com.example.resultservice.controller; 
+import org.springframework.web.bind.annotation.*; 
+import com.example.resultservice.model.Result; 
+@RestController 
+@RequestMapping("/results") 
+public class ResultController { 
+@GetMapping 
+public Result getResult() { 
+return new Result(1, 85); 
+} 
+}
+
+Practical 4: Simple Login Authentication System using Microservices. 
+controller,service,model
+Part I: User Service – Stores user information
+
+model/User.java 
+package com.example.user_service.model; 
+public class User { 
+private String username; 
+private String password; 
+    public User(String username, String password) { 
+        this.username = username; 
+        this.password = password; 
+    } 
+    public String getUsername() { 
+        return username; 
+    } 
+    public String getPassword() { 
+        return password; 
+    } 
+} 
+
+UserService.java 
+package com.example.user_service.service; 
+ 
+import com.example.user_service.model.User; 
+import org.springframework.stereotype.Service; 
+ 
+    @Service 
+    public class UserService { 
+        public User getUser(String username) { 
+            if(username.equals("admin")) { 
+                return new User("admin","1234"); 
+            } 
+            return null; 
+        } 
+    } 
+
+/UserController.java 
+package com.example.user_service.controller; 
+ 
+import com.example.user_service.model.User; 
+import com.example.user_service.service.UserService; 
+import org.springframework.web.bind.annotation.*; 
+ 
+@RestController 
+@RequestMapping("/user") 
+public class UserController { 
+private final UserService userService; 
+public UserController(UserService userService) { 
+this.userService = userService; 
+} 
+@GetMapping("/{username}") 
+public User getUser(@PathVariable String username) { 
+return userService.getUser(username); 
+} 
+}
+
+http://localhost:8081/user/admin
+
+Part II: Create Authentication Microservice
+control,service,model
+
+LoginRequest.java 
+package com.example.auth_service.model; 
+public class LoginRequest { 
+private String username; 
+private String password; 
+public String getUsername() { 
+return username; 
+} 
+public void setUsername(String username) { 
+        this.username = username; 
+    } 
+    public String getPassword() { 
+        return password; 
+    } 
+    public void setPassword(String password) { 
+        this.password = password; 
+    } 
+}
+
+AuthService.java 
+package com.example.auth_service.service; 
+ 
+import com.example.auth_service.model.LoginRequest; 
+import org.springframework.stereotype.Service; 
+import org.springframework.web.client.RestTemplate; 
+@Service 
+public class AuthService { 
+    public String login(LoginRequest request) { 
+        RestTemplate restTemplate = new RestTemplate(); 
+        String url = "http://localhost:8081/user/" + request.getUsername(); 
+        try { 
+            Object user = restTemplate.getForObject(url, Object.class); 
+            if(user != null && request.getPassword().equals("1234")) { 
+                return "Login Successful"; 
+            } 
+        } catch(Exception e) { 
+            return "User Not Found"; 
+        } 
+        return "Invalid Password"; 
+    } 
+}
+
+AuthController.java 
+package com.example.auth_service.controller; 
+ 
+import com.example.auth_service.model.LoginRequest; 
+import com.example.auth_service.service.AuthService; 
+import org.springframework.web.bind.annotation.*; 
+@RestController 
+@RequestMapping("/auth") 
+public class AuthController { 
+    private final AuthService authService; 
+    public AuthController(AuthService authService) { 
+        this.authService = authService; 
+    } 
+    @PostMapping("/login") 
+    public String login(@RequestBody LoginRequest request) { 
+        return authService.login(request); 
+    } 
+} 
+
+http://localhost:8082/auth/login
+
+Practical 5: Basic Fault Tolerance (Circuit Breaker Concept)
+pom.xml 
+<dependency> 
+<groupId>org.springframework.boot</groupId> 
+    <artifactId>spring-boot-starter-aop</artifactId> 
+</dependency> 
+ 
+<dependency> 
+    <groupId>io.github.resilience4j</groupId> 
+    <artifactId>resilience4j-spring 
+       boot3</artifactId> 
+    <version>2.1.0</version> 
+</dependency> 
+
+DemoController.java 
+package com.example.circuitbreaker_demo.controller; 
+ 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker; 
+import org.springframework.web.bind.annotation.GetMapping; 
+import org.springframework.web.bind.annotation.RestController; 
+@RestController 
+public class DemoController { 
+    private int count = 0; 
+    @GetMapping("/service") 
+    @CircuitBreaker(name = "demoService", fallbackMethod = 
+            "fallbackResponse") 
+    public String callService() { 
+        count++; 
+        if (count % 2 == 0) { 
+            throw new RuntimeException("Service Failed"); 
+       } 
+        return "Service Response Successful"; 
+    } 
+    public String fallbackResponse(Exception e) { 
+        return "Fallback Response: Service is temporarily unavailable"; 
+    } 
+} 
+
+src/main/resources/application.properties 
+Add the following configuration: 
+spring.application.name=circuitbreaker-demo 
+server.port=8081 
+resilience4j.circuitbreaker.instances.demoService.registerHealthIndicator=true 
+resilience4j.circuitbreaker.instances.demoService.failureRateThreshold=50 
+resilience4j.circuitbreaker.instances.demoService.slidingWindowSize=5 
+resilience4j.circuitbreaker.instances.demoService.waitDurationInOpenState=10s 
+resilience4j.circuitbreaker.instances.demoService.permittedNumberOfCallsInHa
+lfOpenState=3 
+
+Practical 6: Implementing Communication Between Microservices using REST API 
+Part I 
+HelloController.java 
+package com.example.service1.controller; 
+import org.springframework.web.bind.annotation.GetMapping; 
+import org.springframework.web.bind.annotation.RestController; 
+@RestController 
+public class HelloController { 
+@GetMapping("/hello") 
+public String helloService() { 
+return "Hello from Service 1"; 
+} 
+} 
+
+PART II 
+CallServiceController 
+package com.example.service2.controller; 
+ 
+import org.springframework.web.bind.annotation.GetMapping; 
+import org.springframework.web.bind.annotation.RestController; 
+import org.springframework.web.client.RestTemplate; 
+@RestController 
+public class CallServiceController { 
+    @GetMapping("/call") 
+    public String callService1() { 
+        RestTemplate restTemplate = new RestTemplate(); 
+        String response = restTemplate.getForObject( 
+                "http://localhost:8081/hello", 
+                String.class 
+        ); 
+        return "Response from Service1: " + response; 
+    } 
+} 
+Open browser: http://localhost:8082/call 
+
+
+Practical 7: Implementing Service Registry- Service Discovery using Eureka
+
+1. Eureka Server  
+2. Student Service  
+3. Course Service 
+
+Open: 
+EurekaServerApplication.java 
+Add annotation: 
+package com.example.eureka_server; 
+import org.springframework.boot.SpringApplication; 
+import org.springframework.boot.autoconfigure.SpringBootApplication; 
+import 
+org.springframework.cloud.netflix.eureka.server.EnableEurekaServer; 
+@SpringBootApplication 
+@EnableEurekaServer 
+public class EurekaServerApplication { 
+public static void main(String[] args) { 
+SpringApplication.run(EurekaServerApplication.class, args); 
+} 
+}
+
+Configure application.properties 
+Open: 
+src/main/resources/application.properties  
+Add:  
+server.port=8761  
+eureka.client.register-with-eureka=false  
+eureka.client.fetch-registry=false 
+
+Open browser: http://localhost:8761  
+
+PART II
+Configure Properties 
+Open application.properties 
+Add: 
+spring.application.name=student-service 
+server.port=8081 
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+
+StudentController.java 
+package com.example.student_service.controller; 
+import org.springframework.web.bind.annotation.GetMapping; 
+import org.springframework.web.bind.annotation.RestController; 
+@RestController 
+public class StudentController { 
+@GetMapping("/student") 
+public String getStudent() { 
+return "Student Service Running"; 
+} 
+} 
+
+PART III
+ Configure Properties 
+Open: application.properties 
+spring.application.name=course-service s 
+erver.port=8082  
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+
+ Create Controller 
+Create: CourseController.java in controller package 
+CourseController.java 
+package com.example.course_service.controller; 
+import org.springframework.web.bind.annotation.GetMapping; 
+import org.springframework.web.bind.annotation.RestController; 
+@RestController 
+public class CourseController { 
+@GetMapping("/course") 
+public String getCourse() { 
+return "Course Service Running"; 
+} 
+}  
+
+
